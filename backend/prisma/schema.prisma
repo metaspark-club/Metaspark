@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int       @id @default(autoincrement())
+  username       String    @unique
+  email          String    @unique
+  password       String
+  profilePicture String?   
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  posts          Post[]
+  sentMessages   Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  friends        Friendship[] @relation("UserFriends")
+  friendOf       Friendship[] @relation("FriendOf")
+
+  // AI chat interactions
+  aiMessages     AIMsg[]
+
+  @@map("users")
+}
+
+model Post {
+  id         Int      @id @default(autoincrement())
+  text       String?
+  imageUrl   String?
+  isPrivate  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  authorId   Int
+  author     User     @relation(fields: [authorId], references: [id])
+
+  @@map("posts")
+}
+
+model Friendship {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  friendId  Int
+  createdAt DateTime @default(now())
+
+  user      User     @relation("UserFriends", fields: [userId], references: [id])
+  friend    User     @relation("FriendOf", fields: [friendId], references: [id])
+
+  @@unique([userId, friendId])
+  @@map("friendships")
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  content    String
+  createdAt  DateTime @default(now())
+
+  senderId   Int
+  receiverId Int
+
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+
+  @@map("messages")
+}
+
+model AIMsg {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  sender     String   // so nariman here will be either 'user' or 'bot'
+  message    String
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@map("ai_messages")
+}
