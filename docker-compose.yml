@@ -1,0 +1,38 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: dockerfile
+    container_name: metaspark-backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend:/src
+      - /src/node_modules
+    working_dir: /src
+    command: sh -c "npx prisma generate && npm run dev"
+    networks:
+      - metaspark-net
+    depends_on:
+      - frontend
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: metaspark-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/frontend
+      - /frontend/node_modules
+    working_dir: /frontend
+    command: npm run dev
+    networks:
+      - metaspark-net
+
+networks:
+  metaspark-net:
+    driver: bridge

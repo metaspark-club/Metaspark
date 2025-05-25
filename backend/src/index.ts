@@ -1,13 +1,12 @@
-import express from 'express';
-import http from 'http';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import { Server } from 'socket.io';
-import { PrismaClient } from '@prisma/client';
-import router from './routes/userRoutes';
-import authRoutes from './routes/authRoutes';
-import userMessages from './routes/userMessages';
-
+import express from "express";
+import http from "http";
+import cors from "cors";
+import dotenv from "dotenv";
+import { Server } from "socket.io";
+import { PrismaClient } from "@prisma/client";
+import router from "./routes/userRoutes";
+import authRoutes from "./routes/authRoutes";
+import userMessages from "./routes/userMessages";
 
 dotenv.config();
 const app = express();
@@ -15,35 +14,34 @@ const prisma = new PrismaClient();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: '*',
-    methods: ['GET', 'POST']
-  }
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
 });
 
 app.use(cors());
 app.use(express.json());
-app.use('/api/users', router);
-app.use('/api/auth', authRoutes);
-app.use('/api/messages', userMessages);
-
+app.use("/api/users", router);
+app.use("/api/auth", authRoutes);
+app.use("/api/messages", userMessages);
 
 const onlineUsers = new Map();
 
-io.on('connection', (socket) => {
-  console.log('Socket connected:', socket.id);
+io.on("connection", (socket) => {
+  console.log("Socket connected:", socket.id);
 
-  socket.on('user_connected', async (userId: number) => {
+  socket.on("user_connected", async (userId: number) => {
     onlineUsers.set(userId, socket.id);
 
     const users = await prisma.user.findMany({
       select: { id: true, username: true, profilePicture: true },
     });
 
-    io.emit('online_users', Array.from(onlineUsers.keys()));
-    socket.emit('all_users', users);
+    io.emit("online_users", Array.from(onlineUsers.keys()));
+    socket.emit("all_users", users);
   });
 
-  socket.on('private_message', async ({ from, to, content }) => {
+  socket.on("private_message", async ({ from, to, content }: any) => {
     const newMessage = await prisma.message.create({
       data: {
         senderId: from,
@@ -62,23 +60,23 @@ io.on('connection', (socket) => {
 
     const toSocket = onlineUsers.get(to);
     if (toSocket) {
-      io.to(toSocket).emit('private_message', message);
+      io.to(toSocket).emit("private_message", message);
     }
 
     const fromSocket = onlineUsers.get(from);
     if (fromSocket) {
-      io.to(fromSocket).emit('private_message', message);
+      io.to(fromSocket).emit("private_message", message);
     }
   });
 
-  socket.on('disconnect', () => {
+  socket.on("disconnect", () => {
     for (const [userId, socketId] of onlineUsers.entries()) {
       if (socketId === socket.id) {
         onlineUsers.delete(userId);
         break;
       }
     }
-    io.emit('online_users', Array.from(onlineUsers.keys()));
+    io.emit("online_users", Array.from(onlineUsers.keys()));
   });
 });
 

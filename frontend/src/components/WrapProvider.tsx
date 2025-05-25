@@ -1,13 +1,12 @@
-'use client';
+"use client";
 
-import { Provider, useSelector } from 'react-redux'
-import { RootState, store } from '@/store'
+import { Provider } from "react-redux";
+import { store } from "@/store";
 
-export default function WrapProvider({ children }: { children: React.ReactNode }) {
-  
-  return (
-    <Provider store={store}>
-    {children}    
-    </Provider>
-  )
+export default function WrapProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <Provider store={store}>{children}</Provider>;
 }
