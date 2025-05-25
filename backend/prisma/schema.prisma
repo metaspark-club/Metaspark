@@ -22,7 +22,7 @@ model User {
   friends        Friendship[] @relation("UserFriends")
   friendOf       Friendship[] @relation("FriendOf")
 
-  // AI chat interactions
+ 
   aiMessages     AIMsg[]
 
   @@map("users")

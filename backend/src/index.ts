@@ -24,17 +24,19 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/users', router);
 app.use('/api/auth', authRoutes);
-app.use('/api/messages', authRoutes);
+app.use('/api/messages', userMessages);
 
 
 const onlineUsers = new Map();
 
 io.on('connection', (socket) => {
-  socket.on('user_connected', async (userId) => {
+  console.log('Socket connected:', socket.id);
+
+  socket.on('user_connected', async (userId: number) => {
     onlineUsers.set(userId, socket.id);
 
     const users = await prisma.user.findMany({
-      select: { id: true, username: true, profilePicture: true }
+      select: { id: true, username: true, profilePicture: true },
     });
 
     io.emit('online_users', Array.from(onlineUsers.keys()));
@@ -43,14 +45,19 @@ io.on('connection', (socket) => {
 
   socket.on('private_message', async ({ from, to, content }) => {
     const newMessage = await prisma.message.create({
-      data: { senderId: from, receiverId: to, content }
+      data: {
+        senderId: from,
+        receiverId: to,
+        content,
+      },
     });
 
     const message = {
       id: newMessage.id,
       content: newMessage.content,
+      senderId: from,
+      receiverId: to,
       createdAt: newMessage.createdAt,
-      from
     };
 
     const toSocket = onlineUsers.get(to);
@@ -65,9 +72,9 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', () => {
-    for (const [key, value] of onlineUsers.entries()) {
-      if (value === socket.id) {
-        onlineUsers.delete(key);
+    for (const [userId, socketId] of onlineUsers.entries()) {
+      if (socketId === socket.id) {
+        onlineUsers.delete(userId);
         break;
       }
     }

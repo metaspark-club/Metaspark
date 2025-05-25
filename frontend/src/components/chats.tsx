@@ -32,12 +32,17 @@ const Chat = () => {
     if (user) {
       const socket = connectSocket(user.token);
 
-      socket.on('receive_message', (message: Message) => {
+      
+      socket.emit("user_connected", user.id);
+
+      socket.on("private_message", (message: Message) => {
         if (
           selectedUser &&
-          (message.senderId === selectedUser.id || message.receiverId === selectedUser.id)
+          (message.senderId === selectedUser.id ||
+            message.receiverId === selectedUser.id) &&
+          message.senderId !== user.id // Only add message if it's not from the current user
         ) {
-          setMessages(prev => [...prev, message]);
+          setMessages((prev) => [...prev, message]);
         }
       });
     }
@@ -59,7 +64,11 @@ const Chat = () => {
   const selectChatUser = async (otherUser: User) => {
     setSelectedUser(otherUser);
     try {
-      const res = await axios.get(`http://localhost:5000/api/messages/${otherUser.id}`);
+      const params = new URLSearchParams({
+        userId: user?.id?.toString() || '',
+        otherUserId: otherUser.id.toString()
+      });
+      const res = await axios.get(`http://localhost:5000/api/messages?${params.toString()}`);
       setMessages(res.data);
     } catch (error) {
       console.error('Error fetching messages:', error);
@@ -69,9 +78,10 @@ const Chat = () => {
   const sendMessage = () => {
     if (newMessage.trim() && selectedUser && user) {
       const socket = getSocket();
-      socket.emit('send_message', {
+      socket.emit("private_message", {
+        from: user.id,
+        to: selectedUser.id,
         content: newMessage,
-        receiverId: selectedUser.id,
       });
       setMessages(prev => [
         ...prev,
