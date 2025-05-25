@@ -2,7 +2,8 @@ import './globals.css'
 import { ReactNode } from 'react'
 import { Provider } from 'react-redux'
 import { store } from '@/redux/store'
-import WrapProvider from '@/components/WrapProvider'
+// import WrapProvider from '@/components/WrapProvider'
+import { AppProvider } from './providers'
 
 export const metadata = {
   title: 'Meta spark',
@@ -13,11 +14,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <WrapProvider>
+        <AppProvider>
 
         
           {children}
-        </WrapProvider>
+        </AppProvider>
         
       </body>
     </html>

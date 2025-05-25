@@ -7,6 +7,7 @@ import { RootState, store } from '@/store'
 
 export default function Home() {
   const user = useSelector((state: RootState) => state.auth.user)
+  console.log(user);
   return (
     
 

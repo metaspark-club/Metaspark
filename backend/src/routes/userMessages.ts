@@ -1,15 +1,14 @@
-import express from 'express'
 import { PrismaClient } from '@prisma/client';
+import express, { Request, Response } from 'express';
 
-const router = express.Router()
+const router = express.Router();
 const prisma = new PrismaClient();
 
-router.get('/', async  (req, res) => {
+router.get('/messages', async (req: Request, res: Response) => {
   try {
     const users = await prisma.user.findMany({
       
-      select: { id: true, username: true, email: true },
-      // include: { friends: true }
+      
     });
     res.json(users);
   } catch (error) {
