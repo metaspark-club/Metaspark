@@ -35,9 +35,9 @@ model Post {
   isPrivate  Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-
   authorId   Int
-  author     User     @relation(fields: [authorId], references: [id])
+  
+  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 
   @@map("posts")
 }
@@ -48,8 +48,8 @@ model Friendship {
   friendId  Int
   createdAt DateTime @default(now())
 
-  user      User     @relation("UserFriends", fields: [userId], references: [id])
-  friend    User     @relation("FriendOf", fields: [friendId], references: [id])
+  user      User     @relation("UserFriends", fields: [userId], references: [id], onDelete: Cascade)
+  friend    User     @relation("FriendOf", fields: [friendId], references: [id], onDelete: Cascade)
 
   @@unique([userId, friendId])
   @@map("friendships")
@@ -63,8 +63,8 @@ model Message {
   senderId   Int
   receiverId Int
 
-  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
-  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
 
   @@map("messages")
 }
@@ -76,7 +76,7 @@ model AIMsg {
   message    String
   createdAt  DateTime @default(now())
 
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("ai_messages")
 }

@@ -7,6 +7,7 @@ import { PrismaClient } from "@prisma/client";
 import router from "./routes/userRoutes";
 import authRoutes from "./routes/authRoutes";
 import userMessages from "./routes/userMessages";
+import postRoutes from "./routes/postRoutes";
 
 dotenv.config();
 const app = express();
@@ -19,11 +20,17 @@ const io = new Server(server, {
   },
 });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 app.use(express.json());
 app.use("/api/users", router);
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", userMessages);
+app.use("/api/posts", postRoutes);
 
 const onlineUsers = new Map();
 
@@ -80,5 +87,5 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
