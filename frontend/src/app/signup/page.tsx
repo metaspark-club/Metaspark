@@ -21,12 +21,47 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="p-4 max-w-md mx-auto">
-      <h1 className="text-xl font-bold mb-4">Sign Up</h1>
-      <input placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} className="border p-2 mb-2 w-full" />
-      <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="border p-2 mb-2 w-full" />
-      <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="border p-2 mb-2 w-full" />
-      <button onClick={handleSignup} className="bg-green-500 text-white p-2 w-full">Sign Up</button>
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+      <div className="bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-md border border-orange-500">
+        <h1 className="text-2xl font-bold mb-6 text-orange-500 text-center">🤖 Robot Sign Up</h1>
+        
+        <div className="space-y-4">
+          <div className="relative">
+            <input 
+              placeholder="Username" 
+              value={username} 
+              onChange={(e) => setUsername(e.target.value)} 
+              className="w-full bg-gray-700 text-white p-3 rounded-lg border border-gray-600 focus:border-orange-500 focus:outline-none transition-colors"
+            />
+          </div>
+          
+          <div className="relative">
+            <input 
+              placeholder="Email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              className="w-full bg-gray-700 text-white p-3 rounded-lg border border-gray-600 focus:border-orange-500 focus:outline-none transition-colors"
+            />
+          </div>
+          
+          <div className="relative">
+            <input 
+              placeholder="Password" 
+              type="password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              className="w-full bg-gray-700 text-white p-3 rounded-lg border border-gray-600 focus:border-orange-500 focus:outline-none transition-colors"
+            />
+          </div>
+          
+          <button 
+            onClick={handleSignup} 
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
+          >
+            <span className="mr-2">🤖</span> Initialize Account
+          </button>
+        </div>
+      </div>
     </div>
   )
 }

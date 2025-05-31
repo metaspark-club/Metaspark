@@ -16,16 +16,34 @@ model User {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
+  online         Boolean    @default(false)
+  isonrand         Boolean    @default(false)
+  looking   Boolean @default(false)
+
   posts          Post[]
   sentMessages   Message[] @relation("SentMessages")
   receivedMessages Message[] @relation("ReceivedMessages")
   friends        Friendship[] @relation("UserFriends")
   friendOf       Friendship[] @relation("FriendOf")
 
+  resetToken         PasswordResetToken[]
  
   aiMessages     AIMsg[]
 
   @@map("users")
+}
+
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@map("password_reset_tokens")
 }
 
 model Post {
