@@ -3,6 +3,9 @@ import Cookies from "js-cookie";
 
 const PostAPI = axios.create({
   baseURL: "http://localhost:8080/api/posts",
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
 });
 
 PostAPI.interceptors.request.use((req) => {

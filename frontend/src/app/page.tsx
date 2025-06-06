@@ -2,7 +2,9 @@
 import Image from "next/image";
 import { Provider, useSelector } from 'react-redux'
 import { RootState, store } from '@/store'
-
+import Link from "next/link";
+import Landing from "@/components/landing";
+import Dashboard from "@/components/Dashbord";
 
 
 export default function Home() {
@@ -12,17 +14,17 @@ export default function Home() {
     
 
     <main>
-      <h1>Welcome</h1>
+      
       {user ? (
-        <div>
-          <p>Logged in as {user.email}</p>
-        </div>
+        <Dashboard />
       ) : (
-        <p>Not logged in</p>
+        <Landing />
       )}
     </main>
     
   )
 }
+
+
 
 

@@ -47,11 +47,22 @@ export const fetchUserPosts = createAsyncThunk(
 export const createPost = createAsyncThunk(
   "posts/createPost",
   async (
-    postData: { text?: string; imageUrl?: string; isPrivate: boolean },
+    postData: { text?: string; image?: File | null; isPrivate: boolean },
     { rejectWithValue }
   ) => {
     try {
-      const res = await PostAPI.post("/", postData);
+      const formData = new FormData();
+      formData.append("text", postData.text || "");
+      formData.append("isPrivate", String(postData.isPrivate));
+      if (postData.image) {
+        formData.append("image", postData.image);
+      }
+
+      const res = await PostAPI.post("/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       return res.data;
     } catch (err) {
       if (axios.isAxiosError(err) && err.response?.data?.error) {

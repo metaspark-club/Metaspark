@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useAppDispatch } from "@/store/hooks";
 import { createPost } from "@/store/slices/postSlice";
 
@@ -10,21 +10,24 @@ function PostClient() {
   const [isPrivate, setIsPrivate] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
 
-  const handleSubmit = async () => {
+  const handleSubmit = useCallback(async () => {
     if (!text.trim()) return setError("Post input cannot be empty.");
     setError(null);
     setLoading(true);
 
     try {
-      await dispatch(createPost({ text, isPrivate })).unwrap();
+      await dispatch(createPost({ text, isPrivate, image })).unwrap();
       setText("");
+      setImage(null);
     } catch (err: any) {
       setError(err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [text, isPrivate, image, dispatch]);
+
   return (
     <div className="flex space-x-5 justify-center mt-32">
       <div className="flex flex-col space-y-5">
@@ -34,6 +37,14 @@ function PostClient() {
           value={text}
           onChange={(e) => setText(e.target.value)}
           className="p-3 text-black border rounded-xl outline-none placeholder:text-sm w-[20rem]"
+        />
+
+        {/* Image Upload Field */}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImage(e.target.files?.[0] || null)}
+          className="text-sm"
         />
         <button
           onClick={handleSubmit}
