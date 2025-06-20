@@ -1,8 +1,8 @@
-'use client';
-import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useMemo } from 'react';
-import Link from 'next/link';
-import gsap from 'gsap';
+"use client";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useMemo } from "react";
+import Link from "next/link";
+import gsap from "gsap";
 
 export default function Landing() {
   const router = useRouter();
@@ -10,13 +10,15 @@ export default function Landing() {
   const buttonsRef = useRef<HTMLDivElement>(null);
 
   // Memoize the data streams to prevent unnecessary re-renders
-  const dataStreams = useMemo(() => 
-    Array.from({ length: 8 }, (_, i) => ({
-      id: i,
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`,
-      duration: 3 + Math.random() * 2
-    })), []
+  const dataStreams = useMemo(
+    () =>
+      Array.from({ length: 8 }, (_, i) => ({
+        id: i,
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        duration: 3 + Math.random() * 2,
+      })),
+    []
   );
 
   useEffect(() => {
@@ -26,7 +28,7 @@ export default function Landing() {
           opacity: 0,
           y: -20,
           duration: 1.2,
-          ease: 'power2.out'
+          ease: "power2.out",
         });
       }
 
@@ -36,7 +38,7 @@ export default function Landing() {
           y: 20,
           duration: 1,
           stagger: 0.2,
-          ease: 'power2.out'
+          ease: "power2.out",
         });
       }
     });
@@ -48,7 +50,7 @@ export default function Landing() {
     gsap.to(e.currentTarget, {
       scale: 1.05,
       duration: 0.2,
-      ease: 'power2.out'
+      ease: "power2.out",
     });
   };
 
@@ -56,7 +58,7 @@ export default function Landing() {
     gsap.to(e.currentTarget, {
       scale: 1,
       duration: 0.2,
-      ease: 'power2.out'
+      ease: "power2.out",
     });
   };
 
@@ -79,7 +81,7 @@ export default function Landing() {
           {/* Background effects */}
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-[linear-gradient(transparent_0%,rgba(255,165,0,0.1)_50%,transparent_100%)] bg-[length:100%_10px] animate-[scan_4s_linear_infinite]" />
-            
+
             {/* Floating orbs */}
             <div className="absolute w-32 h-32 border-2 border-orange-500/30 rounded-full top-1/4 left-1/4 animate-pulse will-change-transform">
               <div className="absolute inset-0 bg-orange-400/10 blur-2xl" />
@@ -97,7 +99,7 @@ export default function Landing() {
                   style={{
                     left,
                     top,
-                    animation: `dataStream ${duration}s linear infinite`
+                    animation: `dataStream ${duration}s linear infinite`,
                   }}
                 />
               ))}
@@ -114,8 +116,9 @@ export default function Landing() {
                 Welcome to MetaSpark
               </h1>
               <p className="text-xl text-orange-200/80 max-w-2xl mx-auto leading-relaxed">
-                Your next-generation social platform where connections come alive. 
-                Experience real-time chat, AI-powered interactions, and seamless networking.
+                Your next-generation social platform where connections come
+                alive. Experience real-time chat, AI-powered interactions, and
+                seamless networking.
               </p>
               <div className="flex items-center justify-center gap-4 text-orange-300/70 pb-[24px]">
                 <div className="flex items-center">
@@ -134,28 +137,27 @@ export default function Landing() {
             </div>
 
             <div ref={buttonsRef} className="flex gap-6 justify-center">
-            <Link href="login">
-              <button
-                onMouseEnter={handleHover}
-                onMouseLeave={handleLeave}
-                className="px-8 py-3 bg-orange-500 text-black rounded-lg shadow-md hover:bg-orange-600 transition duration-300 text-lg font-semibold relative overflow-hidden will-change-transform"
-              >
-                <span className="relative z-10">Login</span>
-                <div className="absolute inset-0 bg-orange-300/10 blur-md animate-shimmer" />
-              </button>
-            </Link>
+              <Link href="login">
+                <button
+                  onMouseEnter={handleHover}
+                  onMouseLeave={handleLeave}
+                  className="px-8 py-3 bg-orange-500 text-black rounded-lg shadow-md hover:bg-orange-600 transition duration-300 text-lg font-semibold relative overflow-hidden will-change-transform"
+                >
+                  <span className="relative z-10">Login</span>
+                  <div className="absolute inset-0 bg-orange-300/10 blur-md animate-shimmer" />
+                </button>
+              </Link>
 
               <Link href="signup">
-              <button
-                onMouseEnter={handleHover}
-                onMouseLeave={handleLeave}
-                
-                className="px-8 py-3 bg-gray-800 text-orange-400 border-2 border-orange-500 rounded-lg hover:bg-gray-700 transition duration-300 text-lg font-semibold relative overflow-hidden will-change-transform"
+                <button
+                  onMouseEnter={handleHover}
+                  onMouseLeave={handleLeave}
+                  className="px-8 py-3 bg-gray-800 text-orange-400 border-2 border-orange-500 rounded-lg hover:bg-gray-700 transition duration-300 text-lg font-semibold relative overflow-hidden will-change-transform"
                 >
-                <span className="relative z-10">Sign Up</span>
-                <div className="absolute inset-0 bg-orange-400/10 blur-md animate-shimmer" />
-              </button>
-                </Link>
+                  <span className="relative z-10">Sign Up</span>
+                  <div className="absolute inset-0 bg-orange-400/10 blur-md animate-shimmer" />
+                </button>
+              </Link>
             </div>
           </div>
         </div>

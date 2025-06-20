@@ -7,6 +7,9 @@ const prisma = new PrismaClient();
 router.get("/", async (req, res) => {
   try {
     const users = await prisma.user.findMany({
+      orderBy: {
+        createdAt: "asc",
+      },
       select: { id: true, username: true, email: true },
       // include: { friends: true }
     });

@@ -49,6 +49,7 @@ postRouter.get("/newspaper", verifyToken, async (req, res) => {
     });
 
     const friendIds = new Set<number>();
+
     friends.forEach(({ userId, friendId }) => {
       const differentId = userId === user.id ? friendId : userId;
       friendIds.add(differentId);
