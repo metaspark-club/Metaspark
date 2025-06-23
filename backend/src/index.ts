@@ -19,12 +19,24 @@ const io = new Server(server, {
   },
 });
 
+const allowedOrigins = [
+  "https://elspark-umber.vercel.app",
+  "http://localhost:3000",
+];
+
 app.use(
   cors({
-    origin: "https://elspark-umber.vercel.app/",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use("/api/users", router);
 app.use("/api/auth", authRoutes);
