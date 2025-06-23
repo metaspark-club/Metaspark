@@ -22,10 +22,11 @@ function AuthLoader() {
     const token = Cookies.get("token");
     if (token) {
       try {
-        const user = jwtDecode<TokenPayload>(token);
+        const decoded = jwtDecode<TokenPayload>(token);
+        const user = { ...decoded, token };
         dispatch(setCredentials({ user, token }));
       } catch (err) {
-        console.error("Invalid token");
+        console.error("Invalid token", err);
       }
     }
   }, []);

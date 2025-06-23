@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Link from "next/link";
 
 export default function ForgotPassword() {
@@ -15,8 +15,10 @@ export default function ForgotPassword() {
         { email }
       );
       setMsg(res.data.message);
-    } catch (err: any) {
-      setMsg(err.response?.data?.message || "An error occurred");
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      const message = error.response?.data?.message || "Login failed";
+      alert(message);
     }
   };
 

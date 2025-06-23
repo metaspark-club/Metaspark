@@ -21,8 +21,12 @@ function PostClient() {
       await dispatch(createPost({ text, isPrivate, image })).unwrap();
       setText("");
       setImage(null);
-    } catch (err: any) {
-      setError(err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
     } finally {
       setLoading(false);
     }

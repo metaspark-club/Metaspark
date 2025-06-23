@@ -1,13 +1,7 @@
 "use client";
-import Image from "next/image";
-import { Provider, useSelector } from "react-redux";
-import { RootState, store } from "@/store/store";
-import Link from "next/link";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 import Landing from "@/components/landing";
-import Dashboard from "@/components/Dashbord";
-import { useEffect } from "react";
-import { logout } from "@/store/slices/authSlice";
-import { useDispatch } from "react-redux";
 import WaitList from "@/components/wait-list";
 
 export default function Home() {

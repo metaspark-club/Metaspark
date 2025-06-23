@@ -26,7 +26,7 @@ export default function ResetPassword() {
       setTimeout(() => {
         router.push("/login");
       }, 2000);
-    } catch (err: any) {
+    } catch (err) {
       setMsg("Token expired or invalid");
       console.log(err);
     }

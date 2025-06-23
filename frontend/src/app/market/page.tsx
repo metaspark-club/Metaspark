@@ -1,8 +1,5 @@
 "use client";
-
-import { RootState } from "@/store/store";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 
 interface Digisket {
   id: number;
@@ -13,7 +10,6 @@ interface Digisket {
 }
 
 export default function MarketPage() {
-  const user = useSelector((state: RootState) => state.auth.user);
   const [selectedDigisket, setSelectedDigisket] = useState<Digisket | null>(
     null
   );
@@ -105,6 +101,27 @@ export default function MarketPage() {
           </div>
         ))}
       </div>
+
+      {/* Digisket Detail Popup */}
+      {selectedDigisket && (
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white border border-orange-500 p-6 rounded-xl shadow-lg max-w-md w-full z-50">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold">{selectedDigisket.name}</h2>
+            <button
+              onClick={() => setSelectedDigisket(null)}
+              className="text-orange-400 hover:text-orange-200 text-sm"
+            >
+              ✖ Close
+            </button>
+          </div>
+          <p className="text-sm text-gray-300 mb-2">
+            {selectedDigisket.description}
+          </p>
+          <p className="text-orange-400 font-bold">
+            {selectedDigisket.price} credits
+          </p>
+        </div>
+      )}
 
       {/* Decorative Elements */}
       <div className="fixed inset-0 pointer-events-none">

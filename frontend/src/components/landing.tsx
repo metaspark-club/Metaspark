@@ -1,11 +1,9 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 
 export default function Landing() {
-  const router = useRouter();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
 

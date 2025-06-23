@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import API from "@/lib/api";
 import Cookies from "js-cookie";
 import Link from "next/link";
+import type { AxiosError } from "axios";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -20,8 +21,10 @@ export default function LoginPage() {
       Cookies.set("token", res.data.token);
       dispatch(setCredentials({ user: res.data.user, token: res.data.token }));
       router.push("/");
-    } catch (err: any) {
-      alert(err.response?.data?.message || "Login failed");
+    } catch (err) {
+      const error = err as AxiosError<{ message: string }>;
+      const message = error.response?.data?.message || "Login failed";
+      alert(message);
     }
   };
 
