@@ -21,7 +21,7 @@ const io = new Server(server, {
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "https://elspark-umber.vercel.app/",
     credentials: true,
   })
 );
@@ -78,5 +78,5 @@ io.on("connection", (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 8080;
+// const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
