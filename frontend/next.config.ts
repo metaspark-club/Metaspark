@@ -4,9 +4,8 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "localhost",
-        port: "8080",
+        protocol: "https",
+        hostname: "metaspark-backend.onrender.com",
         pathname: "/uploads/**",
       },
     ],
@@ -15,7 +14,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/uploads/:path*",
-        destination: "http://localhost:8080/uploads/:path*",
+        destination: "https://metaspark-backend.onrender.com/uploads/:path*",
       },
     ];
   },
