@@ -21,7 +21,9 @@ const io = new Server(server, {
 
 const allowedOrigins = [
   "https://elspark-umber.vercel.app",
+  "https://elspark.online",
   "http://localhost:3000",
+
 ];
 
 app.use(
